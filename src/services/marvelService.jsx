@@ -1,6 +1,3 @@
-
-const marvelCh = 'https://gateway.marvel.com:443/v1/public/characters?limit=9&offset=210&apikey=84a7e137899c4df45fe7eadcd6444d15';
-
 class marvelService {
     _apiBase = 'https://gateway.marvel.com:443/v1/public/';
     _apiKey = 'apikey=84a7e137899c4df45fe7eadcd6444d15'
