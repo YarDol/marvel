@@ -17,8 +17,15 @@ class CharList extends Component {
     MarvelService = new marvelService();
 
     componentDidMount(){
-        this.onRequest();
+        if (this.state.offset < 219) {
+            this.onRequest();
+          }
+          window.addEventListener("scroll", this.onScroll);
     }
+    
+    componentWillUnmount() {
+        window.removeEventListener("scroll", this.onScroll);
+      }
 
     onRequest = (offset) => {
         this.onCharListLoading();
@@ -49,6 +56,17 @@ class CharList extends Component {
     onError = () => {
         this.setState({loading: false, error: true});
     }
+
+    onScroll = () => {
+        if (this.state.offset < 219) return;
+        if (this.state.newItemLoading) return;
+        if (this.state.charEnded)
+          window.removeEventListener("scroll", this.onScroll);
+     
+        if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+          this.onRequest(this.state.offset);
+        }
+      };
 
     renderCharacters(arr){
         const items =  arr.map((item) => {
