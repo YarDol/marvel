@@ -10,8 +10,8 @@ class marvelService {
         return await res.json();
     };
 
-    getAllCharacters = async () => {
-        const res = await this.getResource(`${process.env.REACT_APP_apiBase}characters?limit=9&offset=210&${process.env.REACT_APP_apiKey}`);
+    getAllCharacters = async (offset = process.env.REACT_API_baseOffset) => {
+        const res = await this.getResource(`${process.env.REACT_APP_apiBase}characters?limit=9&offset=${offset}&${process.env.REACT_APP_apiKey}`);
         return res.data.results.map(this._transformCharacter);
     }
 
