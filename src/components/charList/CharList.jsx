@@ -18,33 +18,33 @@ const CharList = (props) => {
     useEffect(() => {
         window.addEventListener('scroll', onScroll);
         return () => window.removeEventListener('scroll', onScroll);
-      }, []);
+    }, []);
      
-      useEffect(() => {
+    useEffect(() => {
         if (newItemLoading && !charEnded) {
             onRequest();
         }
-      }, [newItemLoading]);
-     
-      const onScroll = (event) => {
+    }, [newItemLoading]);
+    
+    const onScroll = (event) => {
         if (
-          window.innerHeight + window.scrollY >= document.body.offsetHeight
+            window.innerHeight + window.scrollY >= document.body.offsetHeight
         ) {
             setNewItemLoading(true);
         }
-      };
-     
-      const onRequest = () => {
+    };
+    
+    const onRequest = () => {
         initialLoading ? setNewItemLoading(false) : setNewItemLoading(true);
         getAllCharacters(offset).then(onCharactersLoaded).finally(() => setNewItemLoading(false));
-      };
-     
-      const onCharactersLoaded = (newCharList) => {
+    };
+    
+    const onCharactersLoaded = (newCharList) => {
         setInitialLoading(false);
         setCharList((charList) => [...charList, ...newCharList]);
         setOffset((offset) => offset + 9);
         setCharEnded(newCharList.length < 9 ? true : false);
-      };
+    };
 
     const itemsRef = useRef([]);
 
