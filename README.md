@@ -1,4 +1,3 @@
-https://test-my-marvel-checker.netlify.app
 
 # Getting Started with Create React App
 
