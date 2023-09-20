@@ -1,5 +1,5 @@
 import {useState, useEffect} from 'react';
-import useMarvelService from '../../services/MarvelService';
+import useMarvelService from '../../services/marvelService';
 import Spinner from '../spinner/Spinner';
 import ErrorMessage from '../errorMessage/ErrorMessage';
 import './comicsList.scss';

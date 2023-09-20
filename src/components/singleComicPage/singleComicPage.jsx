@@ -1,7 +1,7 @@
 import { useParams, Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import './singleComicPage.scss';
-import useMarvelService from './../services/MarvelService';
+import useMarvelService from '../../services/marvelService';
 import Spinner from '../spinner/Spinner';
 import ErrorMessage from '../errorMessage/ErrorMessage';
 import AppBanner from "../appBanner/AppBanner";
@@ -16,14 +16,16 @@ const SingleComicPage = () => {
         updateComic()
     }, [comicId])
 
-    const updateComic = () => {
-        clearError();
-        getComics(comicId)
-            .then(onComicLoaded)
-    }
-
     const onComicLoaded = (comic) => {
         setComic(comic);
+    }
+
+    const updateComic = async () => {
+        clearError();
+        const comic = await getComics(comicId)
+        if(comic){
+            onComicLoaded(comic);
+        }
     }
 
     const errorMessage = error ? <ErrorMessage/> : null;
