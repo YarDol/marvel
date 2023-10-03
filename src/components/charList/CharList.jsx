@@ -4,6 +4,7 @@ import useMarvelService from '../../services/marvelService';
 import ErrorMessage from '../errorMessage/ErrorMessage';
 import Spinner from '../spinner/Spinner';
 import PropTypes from 'prop-types';
+import { TransitionGroup, CSSTransition } from 'react-transition-group';
 
 const CharList = (props) => {
 
@@ -55,40 +56,85 @@ const CharList = (props) => {
     }
 
     function renderCharacters(arr){
-        const items =  arr.map((item, i) => {
-            let imgStyle = {'objectFit' : 'cover'};
-            if (item.thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg') {
-                imgStyle = {'objectFit' : 'unset'};
-            }
+        // const items =  arr.map((item, i) => {
+        //     let imgStyle = {'objectFit' : 'cover'};
+        //     if (item.thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg') {
+        //         imgStyle = {'objectFit' : 'unset'};
+        //     }
 
-            return (
-                <li 
-                    className="char__item"
+        //     return (
+        //         <li 
+        //             className="char__item"
+        //             tabIndex={0}
+        //             ref={el => itemsRef.current[i] = el}
+        //             key={item.id}
+        //             onClick={() => {
+        //                 props.onCharSelected(item.id)
+        //                 onFocus(i);
+        //             }}
+        //             onKeyPress={(e) => {
+        //                 if(e.key === ' ' || e.key === "Enter"){
+        //                     e.preventDefault();
+        //                     props.onCharSelected(item.id);
+        //                     onFocus(i);
+        //                 }
+        //             }}>
+        //                 <img src={item.thumbnail} alt={item.name} style={imgStyle}/>
+        //                 <div className="char__name">{item.name}</div>
+        //         </li>
+        //     )
+        // });
+
+        // return (
+        //     <ul className="char__grid">
+        //         {items}
+        //     </ul>
+        // )
+
+        const { onCharSelected } = props;
+
+    return (
+      <>
+        <ul className='char__grid'>
+          <TransitionGroup component={null}>
+            {charList.map((item, i) => {
+              let pathArr, imgStyle;
+              if (item.thumbnail) {
+                pathArr = item.thumbnail.split('/');
+                imgStyle =
+                  pathArr[pathArr.length - 1] === 'image_not_available.jpg'
+                    ? { objectFit: 'fill' }
+                    : null;
+              }
+
+              return (
+                <CSSTransition timeout={300} classNames='char__item' mountOnEnter unmountOnExit>
+                  <li
+                    ref={(el) => (itemsRef.current[i] = el)}
                     tabIndex={0}
-                    ref={el => itemsRef.current[i] = el}
-                    key={item.id}
+                    className='char__item'
+                    key={i}
                     onClick={() => {
-                        props.onCharSelected(item.id)
-                        onFocus(i);
+                      onCharSelected(item.id);
+                      onFocus(i);
                     }}
-                    onKeyPress={(e) => {
-                        if(e.key === ' ' || e.key === "Enter"){
-                            e.preventDefault();
-                            props.onCharSelected(item.id);
-                            onFocus(i);
-                        }
-                    }}>
-                        <img src={item.thumbnail} alt={item.name} style={imgStyle}/>
-                        <div className="char__name">{item.name}</div>
-                </li>
-            )
-        });
-
-        return (
-            <ul className="char__grid">
-                {items}
-            </ul>
-        )
+                    onKeyDown={(e) => {
+                      if (e.key === ' ' || e.key === 'Enter') {
+                        onCharSelected(item.id);
+                        onFocus(i);
+                      }
+                    }}
+                  >
+                    <img style={imgStyle} src={item.thumbnail} alt={item.name} />
+                    <div className='char__name'>{item.name}</div>
+                  </li>
+                </CSSTransition>
+              );
+            })}
+          </TransitionGroup>
+        </ul>
+      </>
+      );
     }
 
     const items = renderCharacters(charList);
