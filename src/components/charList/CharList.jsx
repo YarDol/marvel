@@ -5,6 +5,7 @@ import ErrorMessage from '../errorMessage/ErrorMessage';
 import Spinner from '../spinner/Spinner';
 import PropTypes from 'prop-types';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
+import { Helmet } from 'react-helmet';
 
 const CharList = (props) => {
 
@@ -55,43 +56,8 @@ const CharList = (props) => {
         itemsRef.current[id].focus();
     }
 
-    function renderCharacters(arr){
-        // const items =  arr.map((item, i) => {
-        //     let imgStyle = {'objectFit' : 'cover'};
-        //     if (item.thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg') {
-        //         imgStyle = {'objectFit' : 'unset'};
-        //     }
-
-        //     return (
-        //         <li 
-        //             className="char__item"
-        //             tabIndex={0}
-        //             ref={el => itemsRef.current[i] = el}
-        //             key={item.id}
-        //             onClick={() => {
-        //                 props.onCharSelected(item.id)
-        //                 onFocus(i);
-        //             }}
-        //             onKeyPress={(e) => {
-        //                 if(e.key === ' ' || e.key === "Enter"){
-        //                     e.preventDefault();
-        //                     props.onCharSelected(item.id);
-        //                     onFocus(i);
-        //                 }
-        //             }}>
-        //                 <img src={item.thumbnail} alt={item.name} style={imgStyle}/>
-        //                 <div className="char__name">{item.name}</div>
-        //         </li>
-        //     )
-        // });
-
-        // return (
-        //     <ul className="char__grid">
-        //         {items}
-        //     </ul>
-        // )
-
-        const { onCharSelected } = props;
+    function renderCharacters(){
+      const { onCharSelected } = props;
 
     return (
       <>

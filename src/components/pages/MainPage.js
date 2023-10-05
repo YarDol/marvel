@@ -4,6 +4,7 @@ import CharInfo from "../charInfo/CharInfo";
 import CharSearchForm from "../charSearchForm/charSearchForm";
 import ErrorBoundary from "../errorBoundary/ErrorBoundary";
 import { useState } from "react";
+import { Helmet } from "react-helmet";
 import decoration from '../../resources/img/vision.png';
 
 const MainPage = () => {
@@ -18,6 +19,12 @@ const MainPage = () => {
 
     return (
         <>
+            <Helmet>
+                <meta
+                    name="description"
+                    content="Marvel information portal"/>
+                <title>Marvel information portal</title>
+            </Helmet>
             <ErrorBoundary  rorBoundary><RandomChar/></ErrorBoundary>
             <div className="char__content">
                 <ErrorBoundary><CharList onCharSelected={onCharSelected}/></ErrorBoundary>
