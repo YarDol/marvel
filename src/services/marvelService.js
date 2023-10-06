@@ -1,7 +1,7 @@
 import { useHttp } from "../hooks/http.hook";
 
 const useMarvelService = () => {
-    const {loading, request, error, clearError} = useHttp();
+    const {request, clearError, processing, setProcess} = useHttp();
 
     const getAllCharacters = async (offset = process.env.REACT_API_baseOffset) => {
         const res = await request(`${process.env.REACT_APP_apiBase}characters?limit=9&offset=${offset}&${process.env.REACT_APP_apiKey}`);
@@ -56,7 +56,7 @@ const useMarvelService = () => {
         }
     }
 
-    return {loading, error, getAllCharacters, getCharacter, getAllComics, getComics, clearError, getCharacterByName}
+    return {processing, setProcess, getAllCharacters, getCharacter, getAllComics, getComics, clearError, getCharacterByName}
 }
 
 export default useMarvelService;

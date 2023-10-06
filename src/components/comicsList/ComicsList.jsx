@@ -1,9 +1,28 @@
-import {useState, useEffect} from 'react';
+import {useState, useEffect, useMemo} from 'react';
 import useMarvelService from '../../services/marvelService';
 import Spinner from '../spinner/Spinner';
 import ErrorMessage from '../errorMessage/ErrorMessage';
 import './comicsList.scss';
 import { Link } from 'react-router-dom';
+
+const setContent = (processing, Component, newItemLoading) => {
+    switch(processing){
+        case 'waiting':
+            return <Spinner/>
+            break;
+        case 'loading':
+            return newItemLoading ? <Component/> : <Spinner/>
+            break;
+        case 'confirmed':
+            return <Component/>;
+            break;
+        case 'error':
+            return <ErrorMessage/>
+            break;
+        default: 
+        throw new Error('Unexpected process state ');
+    }
+  }
 
 const ComicsList = () => {
 
@@ -13,7 +32,7 @@ const ComicsList = () => {
     const [offset, setOffset] = useState(0);
     const [comicsEnded, setComicsEnded] = useState(false);
 
-    const {loading, error, getAllComics} = useMarvelService();
+    const {getAllComics, processing, setProcess} = useMarvelService();
 
     useEffect(() => {
         window.addEventListener('scroll', onScroll);
@@ -37,7 +56,7 @@ const ComicsList = () => {
     const onRequest = (offset) => {
         initialLoading ? setNewItemLoading(false) : setNewItemLoading(true);
         getAllComics(offset)
-            .then(onComicsListLoaded).finally(() => setNewItemLoading(false));
+            .then(onComicsListLoaded).then(() => setProcess('confirmed')).finally(() => setNewItemLoading(false));
     }
 
     const onComicsListLoaded = (newComicsList) => {
@@ -67,16 +86,15 @@ const ComicsList = () => {
         )
     }
 
-    const items = renderItems(comicsList);
-
-    const errorMessage = error ? <ErrorMessage/> : null;
-    const spinner = loading && !newItemLoading ? <Spinner/> : null;
+    const elements = useMemo(() => {
+        return setContent(processing, () => renderItems(comicsList), newItemLoading);
+        // eslint-disable-next-line
+      }, [processing]);
 
     return (
         <div className="comics__list">
-            {errorMessage}
-            {spinner}
-            {items}
+            {elements}
+            {!ComicsList.length ? null : (
             <button 
                 disabled={newItemLoading} 
                 style={{'display' : comicsEnded ? 'none' : 'block'}}
@@ -84,6 +102,7 @@ const ComicsList = () => {
                 onClick={() => onRequest(offset)}>
                 <div className="inner">load more</div>
             </button>
+            )}
         </div>
     )
 }

@@ -25,13 +25,15 @@ const MainPage = () => {
                     content="Marvel information portal"/>
                 <title>Marvel information portal</title>
             </Helmet>
-            <ErrorBoundary  rorBoundary><RandomChar/></ErrorBoundary>
+            <ErrorBoundary><RandomChar/></ErrorBoundary>
             <div className="char__content">
                 <ErrorBoundary><CharList onCharSelected={onCharSelected}/></ErrorBoundary>
-                <div>
-                <ErrorBoundary><CharInfo charId={selectedChar}/></ErrorBoundary>
-                <ErrorBoundary><CharSearchForm/></ErrorBoundary>
-                </div>
+                <ErrorBoundary>
+                    <aside style={{ position: 'sticky', top: '25px' }}>
+                        <CharInfo charId={selectedChar}/>
+                        <CharSearchForm />
+                    </aside>
+                </ErrorBoundary>
             </div>
             <img className="bg-decoration" src={decoration} alt="vision"/>
                         
